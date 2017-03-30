@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request
-from models import db
+from models import db, User
 from forms import SignupForm
 
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/learningflask'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/learningflask'
 db.init_app(app)
 
 
@@ -24,12 +24,18 @@ def about():
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
+    # Instantiate a new instance of the SignupForm class.
     form = SignupForm()
 
     if request.method == 'POST':
         if form.validate() == False:
+            # If the form isn't validated, reload the page and a new form.
             return render_template('signup.html', form=form)
         else:
+            # New usable instance of the User object called newuser each time POST is successful
+            newuser = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
+            db.session.add(newuser)
+            db.session.commit()
             return "Success!"
     elif request.method == "GET":
         return render_template("signup.html", form=form)
