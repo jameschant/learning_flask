@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+
 {% block content %}
     <main class="hero-section">
         <div class="container">
@@ -44,13 +45,11 @@
     <script>
         var planes = [
             {% for place in places %}
-                ["<h3><a href="{{ place['url'] }}' target='_blank'>{{ place['name'] }}</a></h3> <p>{{
-                    place['time'] }} min away</p>", {{ place['lat'] }}, {{ place['lng'] }} ],
+                ["<h3><a href="{{ place['url'] }}' target='_blank'>{{ place['name'] }}</a></h3> <p>{{ place['time'] }} min away</p>", {{ place['lat'] }}, {{ place['lng'] }} ],
             {% endfor %}
         ];
 
-        var map = L.map('map').setView([{{ my_coordinates[0] }}, {{ my_coordinates[1] }}], 15);
-        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        var map = L.map('map').setView([{{ my_coordinates[0] }}, {{ my_coordinates[1] }}], 15); mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; ' + mapLink + ' Contributors',
