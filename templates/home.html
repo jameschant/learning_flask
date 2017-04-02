@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div id="mapid"></div>
+            <div id="map" style="width: 600px; height: 400px"></div>
 
             <div class="clearfix"></div>
 
@@ -45,7 +45,7 @@
     <script>
         var planes = [
             {% for place in places %}
-                ["<h3><a href="{{ place['url'] }}' target='_blank'>{{ place['name'] }}</a></h3> <p>{{ place['time'] }} min away</p>", {{ place['lat'] }}, {{ place['lng'] }} ],
+                ["<h3><a href='{{ place['url'] }}' target='_blank'>{{ place['name'] }}</a></h3> <p>{{ place['time'] }} min away</p>", {{ place['lat'] }}, {{ place['lng'] }} ],
             {% endfor %}
         ];
 
