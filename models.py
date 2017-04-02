@@ -4,7 +4,6 @@ from werkzeug import generate_password_hash, check_password_hash
 import geocoder
 from urllib.request import urlopen
 from urllib.parse import urljoin
-import requests
 import json
 
 db = SQLAlchemy()
@@ -31,9 +30,6 @@ class User(db.Model):
         return check_password_hash(self.pwdhash, password)
 
 
-# p = Place()
-# places = p.query("1600 Amphitheater Parkway Mountain View CA")
-
 class Place(object):
     def meters_to_walking_time(self, meters):
         # 80 meters is one minute of walking
@@ -48,9 +44,8 @@ class Place(object):
 
     def query(self, address):
         lat, lng = self.address_to_latlng(address)
-        print(lat, lng)
 
-        query_url = 'https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=5000&gscoord={0}%7C{1}&gslimit=20&format=json'.format(lat, lng)
+        query_url = 'https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=10000&gscoord={0}%7C{1}&gslimit=20&format=json'.format(lat, lng)
         g = urlopen(query_url)
         results = g.read().decode('utf-8')
         g.close()
@@ -76,5 +71,6 @@ class Place(object):
             }
 
             places.append(d)
-
-            return places
+            print(places)
+        print(places)
+        return places
