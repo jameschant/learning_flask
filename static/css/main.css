@@ -75,3 +75,7 @@ a {
     font-weight: 600;
     letter-spacing: 0.23px;
 }
+
+#mapid {
+    height: 180px;
+}

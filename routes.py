@@ -82,7 +82,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/home")
+@app.route("/home", methods=["GET", "POST"])
 def home():
     # An if statement so that if the user isn't logged in, they cannot reach the Home area, which should only be
     # accessible to logged in users. There we redirect them to the login page using url_for. Otherwise we render home.

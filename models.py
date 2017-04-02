@@ -1,8 +1,10 @@
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug import generate_password_hash, check_password_hash
 
 import geocoder
-import urllib2
+from urllib.request import urlopen
+from urllib.parse import urljoin
+import requests
 import json
 
 db = SQLAlchemy()
@@ -38,7 +40,7 @@ class Place(object):
         return int(meters / 80)
 
     def wiki_path(self, slug):
-        return urllib2.urlparse.urljoin("http://en.wikipedia.org/wiki/", slug.replace(' ', '_'))
+        return urljoin("http://en.wikipedia.org/wiki/", slug.replace(' ', '_'))
 
     def address_to_latlng(self, address):
         g = geocoder.google(address)
@@ -49,12 +51,11 @@ class Place(object):
         print(lat, lng)
 
         query_url = 'https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=5000&gscoord={0}%7C{1}&gslimit=20&format=json'.format(lat, lng)
-        g = urllib2.urlopen(query_url)
-        results = g.read()
+        g = urlopen(query_url)
+        results = g.read().decode('utf-8')
         g.close()
 
         data = json.loads(results)
-        print(data)
 
         places = []
         for place in data['query']['geosearch']:
@@ -77,4 +78,3 @@ class Place(object):
             places.append(d)
 
             return places
-
