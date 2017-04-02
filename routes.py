@@ -24,6 +24,8 @@ def about():
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
+    if 'email' in session:
+        return redirect(url_for('home'))
     # Instantiate a new instance of the SignupForm class.
     form = SignupForm()
 
@@ -45,7 +47,9 @@ def signup():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    form = LoginForm
+    if 'email' in session:
+        return redirect(url_for('home'))
+    form = LoginForm()
     # If the form has been posted and the validation check fails, reload the login form
     if request.method == "POST":
         if form.validate() == False:
@@ -72,8 +76,18 @@ def login():
         return render_template('login.html', form=form)
 
 
+@app.route("/logout")
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('index'))
+
+
 @app.route("/home")
 def home():
+    # An if statement so that if the user isn't logged in, they cannot reach the Home area, which should only be
+    # accessible to logged in users. There we redirect them to the login page using url_for. Otherwise we render home.
+    if 'email' not in session:
+        return redirect(url_for('login'))
     return render_template("home.html")
 
 if __name__ == "__main__":
